@@ -1,0 +1,7 @@
+include ':libs:AndEngineLib'
+include ':libs:AndEngineBox2d'
+include ':libs:AndEngineTMXTiledMapExtension'
+include ':app'
+include ':AndEngineExamples'
+project(':AndEngineExamples').projectDir = new File(rootDir, 'libs/AndEngineExamples/')
+rootProject.name = "BlankApp"
