@@ -13,3 +13,6 @@
 .externalNativeBuild
 .cxx
 local.properties
+libs/AndEngineBox2d/build/
+libs/AndEngineLib/build/
+libs/AndEngineTMXTiledMapExtension/build/

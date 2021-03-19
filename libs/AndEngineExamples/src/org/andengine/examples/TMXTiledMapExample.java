@@ -43,168 +43,173 @@ import android.widget.Toast;
  * @since 13:58:48 - 19.07.2010
  */
 public class TMXTiledMapExample extends SimpleBaseGameActivity {
-	// ===========================================================
-	// Constants
-	// ===========================================================
+  // ===========================================================
+  // Constants
+  // ===========================================================
 
-	private static final int CAMERA_WIDTH = 480;
-	private static final int CAMERA_HEIGHT = 320;
+  private static final int CAMERA_WIDTH = 480;
+  private static final int CAMERA_HEIGHT = 320;
 
-	// ===========================================================
-	// Fields
-	// ===========================================================
+  // ===========================================================
+  // Fields
+  // ===========================================================
 
-	private BoundCamera mCamera;
+  private BoundCamera mCamera;
 
-	private ITexture mPlayerTexture;
-	private TiledTextureRegion mPlayerTextureRegion;
+  private ITexture mPlayerTexture;
+  private TiledTextureRegion mPlayerTextureRegion;
 
-	private TMXTiledMap mTMXTiledMap;
-	protected int mCactusCount;
+  private TMXTiledMap mTMXTiledMap;
+  protected static int mCactusCount;
 
-	// ===========================================================
-	// Constructors
-	// ===========================================================
+  // ===========================================================
+  // Constructors
+  // ===========================================================
 
-	// ===========================================================
-	// Getter & Setter
-	// ===========================================================
+  // ===========================================================
+  // Getter & Setter
+  // ===========================================================
 
-	// ===========================================================
-	// Methods for/from SuperClass/Interfaces
-	// ===========================================================
+  // ===========================================================
+  // Methods for/from SuperClass/Interfaces
+  // ===========================================================
 
-	@Override
-	public EngineOptions onCreateEngineOptions() {
-		Toast.makeText(this, "The tile the player is walking on will be highlighted.", Toast.LENGTH_LONG).show();
+  @Override
+  public EngineOptions onCreateEngineOptions() {
+    Toast.makeText(this, "The tile the player is walking on will be highlighted.", Toast.LENGTH_LONG).show();
 
-		this.mCamera = new BoundCamera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
-		this.mCamera.setBoundsEnabled(false);
+    mCamera = new BoundCamera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
+    mCamera.setBoundsEnabled(false);
 
-		return new EngineOptions(true, ScreenOrientation.LANDSCAPE_SENSOR,
-				new RatioResolutionPolicy(CAMERA_WIDTH, CAMERA_HEIGHT), this.mCamera);
-	}
+    return new EngineOptions(true, ScreenOrientation.LANDSCAPE_SENSOR,
+        new RatioResolutionPolicy(CAMERA_WIDTH, CAMERA_HEIGHT), mCamera);
+  }
 
-	@Override
-	public void onCreateResources() throws IOException {
-		this.mPlayerTexture = new AssetBitmapTexture(this.getTextureManager(), this.getAssets(), "gfx/player.png", TextureOptions.DEFAULT);
-		this.mPlayerTextureRegion = TextureRegionFactory.extractTiledFromTexture(this.mPlayerTexture, 3, 4);
-		this.mPlayerTexture.load();
-	}
+  @Override
+  public void onCreateResources() throws IOException {
+    mPlayerTexture = new AssetBitmapTexture(getTextureManager(), getAssets(), "gfx/player.png", TextureOptions.DEFAULT);
+    mPlayerTextureRegion = TextureRegionFactory.extractTiledFromTexture(mPlayerTexture, 3, 4);
+    mPlayerTexture.load();
+  }
 
-	@Override
-	public Scene onCreateScene() {
-		this.mEngine.registerUpdateHandler(new FPSLogger());
+  @Override
+  public Scene onCreateScene() {
+    mEngine.registerUpdateHandler(new FPSLogger());
 
-		final Scene scene = new Scene();
+    final Scene scene = new Scene();
 
-		try {
-			final TMXLoader tmxLoader = new TMXLoader(this.getAssets(), this.mEngine.getTextureManager(), TextureOptions.BILINEAR_PREMULTIPLYALPHA, this.getVertexBufferObjectManager(), new ITMXTilePropertiesListener() {
-				@Override
-				public void onTMXTileWithPropertiesCreated(final TMXTiledMap pTMXTiledMap, final TMXLayer pTMXLayer, final TMXTile pTMXTile, final TMXProperties<TMXTileProperty> pTMXTileProperties) {
-					/* We are going to count the tiles that have the property "cactus=true" set. */
-					if(pTMXTileProperties.containsTMXProperty("cactus", "true")) {
-						TMXTiledMapExample.this.mCactusCount++;
-					}
-				}
-			});
-			this.mTMXTiledMap = tmxLoader.loadFromAsset("tmx/desert.tmx");
-			this.mTMXTiledMap.setOffsetCenter(0, 0);
+    try {
+      final TMXLoader tmxLoader = new TMXLoader(getAssets(), mEngine.getTextureManager(), TextureOptions.BILINEAR_PREMULTIPLYALPHA, getVertexBufferObjectManager(), new ITMXTilePropertiesListener() {
+        @Override
+        public void onTMXTileWithPropertiesCreated(final TMXTiledMap pTMXTiledMap, final TMXLayer pTMXLayer, final TMXTile pTMXTile, final TMXProperties<TMXTileProperty> pTMXTileProperties) {
+          /* We are going to count the tiles that have the property "cactus=true" set. */
+          if (pTMXTileProperties.containsTMXProperty("cactus", "true")) {
+            TMXTiledMapExample.mCactusCount++;
+          }
+        }
+      });
+      mTMXTiledMap = tmxLoader.loadFromAsset("tmx/desert.tmx");
+      mTMXTiledMap.setOffsetCenter(0, 0);
 
-			this.toastOnUiThread("Cactus count in this TMXTiledMap: " + TMXTiledMapExample.this.mCactusCount, Toast.LENGTH_LONG);
-		} catch (final TMXLoadException e) {
-			Debug.e(e);
-		}
+      toastOnUiThread("Cactus count in this TMXTiledMap: " + TMXTiledMapExample.mCactusCount, Toast.LENGTH_LONG);
+    } catch (final TMXLoadException e) {
+      Debug.e(e);
+    }
 
-		scene.attachChild(this.mTMXTiledMap);
+    scene.attachChild(mTMXTiledMap);
 
-		/* Make the camera not exceed the bounds of the TMXEntity. */
-		this.mCamera.setBoundsEnabled(false);
-		this.mCamera.setBounds(0, 0, this.mTMXTiledMap.getWidth(), this.mTMXTiledMap.getHeight());
-		this.mCamera.setBoundsEnabled(true);
+    /* Make the camera not exceed the bounds of the TMXEntity. */
+    mCamera.setBoundsEnabled(false);
+    mCamera.setBounds(0, 0, mTMXTiledMap.getWidth(), mTMXTiledMap.getHeight());
+    mCamera.setBoundsEnabled(true);
 
-		final float centerX = CAMERA_WIDTH / 2;
-		final float centerY = CAMERA_HEIGHT / 2;
+    final float centerX = CAMERA_WIDTH / 2;
+    final float centerY = CAMERA_HEIGHT / 2;
 
-		/* Create the sprite and add it to the scene. */
-		final AnimatedSprite player = new AnimatedSprite(centerX, centerY, this.mPlayerTextureRegion, this.getVertexBufferObjectManager());
-		player.setOffsetCenterY(0);
-		this.mCamera.setChaseEntity(player);
+    /* Create the sprite and add it to the scene. */
+    final AnimatedSprite player = new AnimatedSprite(centerX, centerY, mPlayerTextureRegion, getVertexBufferObjectManager());
+    player.setOffsetCenterY(0);
+    mCamera.setChaseEntity(player);
 
-		final Path path = new Path(5).to(50, 740).to(50, 1000).to(820, 1000).to(820, 740).to(0);
+    final Path path = new Path(5).to(50, 740).to(50, 1000).to(820, 1000).to(820, 740).to(0);
 
-		player.registerEntityModifier(new LoopEntityModifier(new PathModifier(30, path, null, new IPathModifierListener() {
-			@Override
-			public void onPathStarted(final PathModifier pPathModifier, final IEntity pEntity) {
+    player.registerEntityModifier(new LoopEntityModifier(new PathModifier(30, path, null, new IPathModifierListener() {
+      @Override
+      public void onPathStarted(final PathModifier pPathModifier, final IEntity pEntity) {
 
-			}
+      }
 
-			@Override
-			public void onPathWaypointStarted(final PathModifier pPathModifier, final IEntity pEntity, final int pWaypointIndex) {
-				switch(pWaypointIndex) {
-					case 0:
-						player.animate(new long[] { 200, 200, 200 }, 0, 2, true);
-						break;
-					case 1:
-						player.animate(new long[] { 200, 200, 200 }, 3, 5, true);
-						break;
-					case 2:
-						player.animate(new long[] { 200, 200, 200 }, 6, 8, true);
-						break;
-					case 3:
-						player.animate(new long[] { 200, 200, 200 }, 9, 11, true);
-						break;
-				}
-			}
+      @Override
+      public void onPathWaypointStarted(final PathModifier pPathModifier, final IEntity pEntity, final int pWaypointIndex) {
+        switch (pWaypointIndex) {
+          case 0:
+            player.animate(new long[]{200, 200, 200}, 0, 2, true);
+            break;
+          case 1:
+            player.animate(new long[]{200, 200, 200}, 3, 5, true);
+            break;
+          case 2:
+            player.animate(new long[]{200, 200, 200}, 6, 8, true);
+            break;
+          case 3:
+            player.animate(new long[]{200, 200, 200}, 9, 11, true);
+            break;
+        }
+      }
 
-			@Override
-			public void onPathWaypointFinished(final PathModifier pPathModifier, final IEntity pEntity, final int pWaypointIndex) {
+      @Override
+      public void onPathWaypointFinished(final PathModifier pPathModifier, final IEntity pEntity, final int pWaypointIndex) {
 
-			}
+      }
 
-			@Override
-			public void onPathFinished(final PathModifier pPathModifier, final IEntity pEntity) {
+      @Override
+      public void onPathFinished(final PathModifier pPathModifier, final IEntity pEntity) {
 
-			}
-		})));
+      }
+    })));
 
-		/* Now we are going to create a rectangle that will  always highlight the tile below the feet of the pEntity. */
-		final Rectangle currentTileRectangle = new Rectangle(0, 0, this.mTMXTiledMap.getTileWidth(), this.mTMXTiledMap.getTileHeight(), this.getVertexBufferObjectManager());
-		/* Set the OffsetCenter to 0/0, so that it aligns with the TMXTiles. */
-		currentTileRectangle.setOffsetCenter(0, 0);
-		currentTileRectangle.setColor(1, 0, 0, 0.25f);
-		scene.attachChild(currentTileRectangle);
+    /* Now we are going to create a rectangle that will  always highlight the tile below the feet of the pEntity. */
+    final Rectangle currentTileRectangle = new Rectangle(
+        0, 0,
+        mTMXTiledMap.getTileWidth(),
+        mTMXTiledMap.getTileHeight(),
+        getVertexBufferObjectManager());
+    /* Set the OffsetCenter to 0/0, so that it aligns with the TMXTiles. */
+    currentTileRectangle.setOffsetCenter(0, 0);
+    currentTileRectangle.setColor(1, 0, 0, 0.25f);
+    scene.attachChild(currentTileRectangle);
 
-		/* The layer for the player to walk on. */
-		final TMXLayer tmxLayer = this.mTMXTiledMap.getTMXLayers().get(0);
+    /* The layer for the player to walk on. */
+    final TMXLayer tmxLayer = mTMXTiledMap.getTMXLayers().get(0);
 
-		scene.registerUpdateHandler(new IUpdateHandler() {
-			@Override
-			public void reset() { }
+    scene.registerUpdateHandler(new IUpdateHandler() {
+      @Override
+      public void reset() {
+      }
 
-			@Override
-			public void onUpdate(final float pSecondsElapsed) {
-				/* Get the scene-coordinates of the players feet. */
-				final float[] playerFootCordinates = player.convertLocalCoordinatesToSceneCoordinates(16, 1);
+      @Override
+      public void onUpdate(final float pSecondsElapsed) {
+        /* Get the scene-coordinates of the players feet. */
+        final float[] playerFootCordinates = player.convertLocalCoordinatesToSceneCoordinates(16, 1);
 
-				/* Get the tile the feet of the player are currently waking on. */
-				final TMXTile tmxTile = tmxLayer.getTMXTileAt(playerFootCordinates[Constants.VERTEX_INDEX_X], playerFootCordinates[Constants.VERTEX_INDEX_Y]);
-				if(tmxTile != null) {
-					// tmxTile.setTextureRegion(null); <-- Eraser-style removing of tiles =D
-					currentTileRectangle.setPosition(tmxLayer.getTileX(tmxTile.getTileColumn()), tmxLayer.getTileY(tmxTile.getTileRow()));
-				}
-			}
-		});
-		scene.attachChild(player);
+        /* Get the tile the feet of the player are currently waking on. */
+        final TMXTile tmxTile = tmxLayer.getTMXTileAt(playerFootCordinates[Constants.VERTEX_INDEX_X], playerFootCordinates[Constants.VERTEX_INDEX_Y]);
+        if (tmxTile != null) {
+          // tmxTile.setTextureRegion(null); <-- Eraser-style removing of tiles =D
+          currentTileRectangle.setPosition(tmxLayer.getTileX(tmxTile.getTileColumn()), tmxLayer.getTileY(tmxTile.getTileRow()));
+        }
+      }
+    });
+    scene.attachChild(player);
 
-		return scene;
-	}
+    return scene;
+  }
 
-	// ===========================================================
-	// Methods
-	// ===========================================================
+  // ===========================================================
+  // Methods
+  // ===========================================================
 
-	// ===========================================================
-	// Inner and Anonymous Classes
-	// ===========================================================
+  // ===========================================================
+  // Inner and Anonymous Classes
+  // ===========================================================
 }

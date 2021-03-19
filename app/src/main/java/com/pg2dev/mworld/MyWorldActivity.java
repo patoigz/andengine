@@ -21,6 +21,7 @@ import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.LoopEntityModifier;
 import org.andengine.entity.modifier.PathModifier;
 import org.andengine.entity.modifier.PathModifier.IPathModifierListener;
+import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.Sprite;
@@ -50,6 +51,8 @@ public class MyWorldActivity extends SimpleBaseGameActivity {
   // Constants
   // ===========================================================
 
+  public static int mCactusCount;
+
   private int CAMERA_WIDTH;
   private int CAMERA_HEIGHT;
 
@@ -61,7 +64,6 @@ public class MyWorldActivity extends SimpleBaseGameActivity {
   private TiledTextureRegion mPlayerTextureRegion;
 
   private TMXTiledMap mTMXTiledMap;
-  public static int mCactusCount;
 
   private Font mFont;
   private Scene mScene;
@@ -186,16 +188,18 @@ public class MyWorldActivity extends SimpleBaseGameActivity {
 
   private void initScene() {
     final FPSCounter fpsCounter = new FPSCounter();
-    mEngine.registerUpdateHandler(fpsCounter);
+    getEngine().registerUpdateHandler(fpsCounter);
     mScene = new Scene();
-    mScene.getBackground().setColor(0, 0, 0);
+    /* No need for a background color, since our gradient is fullscreen. */
+//    mScene.getBackground().setColor(0, 0, 0);
+    mScene.setBackgroundEnabled(false);
     mHud = new HUD();
 //    final Text elapsedText = new Text(5, 320, mFont, "Seconds elapsed:", "Seconds elapsed: XXXXXX".length(), getVertexBufferObjectManager());
     final Text fpsText = new Text(centerX, 160, mFont, "FPS:", "FPS: XXXXX".length(), getVertexBufferObjectManager());
 //    mHud.attachChild(elapsedText);
     mHud.attachChild(fpsText);
     mScene.registerUpdateHandler(new TimerHandler(1 / 10.0f, true, pTimerHandler -> {
-//      elapsedText.setText(String.format("Seconds elapsed: %.2f", MyWorldActivity.mEngine.getSecondsElapsedTotal()));
+//      elapsedText.setText(String.format("Seconds elapsed: %.2f", MyWorldActivity.getEngine().getSecondsElapsedTotal()));
       fpsText.setText(String.format("FPS: %.2f", fpsCounter.getFPS()));
     }));
 
@@ -204,16 +208,24 @@ public class MyWorldActivity extends SimpleBaseGameActivity {
 
   private void loadTMXMap() {
     try {
-      final TMXLoader tmxLoader = new TMXLoader(getAssets(), mEngine.getTextureManager(), TextureOptions.BILINEAR_PREMULTIPLYALPHA, getVertexBufferObjectManager(), (pTMXTiledMap, pTMXLayer, pTMXTile, pTMXTileProperties) -> {
-        /* We are going to count the tiles that have the property "cactus=true" set. */
-        if (pTMXTileProperties.containsTMXProperty("cactus", "true")) {
-          MyWorldActivity.mCactusCount++;
-        }
-      });
-      mTMXTiledMap = tmxLoader.loadFromAsset("tmx/desert.tmx");
+      final TMXLoader tmxLoader = new TMXLoader(getAssets(), getEngine().getTextureManager(), TextureOptions.BILINEAR_PREMULTIPLYALPHA, getVertexBufferObjectManager(),
+          (pTMXTiledMap, tmxLayer, tmxTile, pTMXTileProperties) -> {
+            /* We are going to count the tiles that have the property "cactus=true" set. */
+//        if (pTMXTileProperties.containsTMXProperty("cactus", "true")) {
+            if (pTMXTileProperties.containsTMXProperty("wall", "true")) { // map custom 2
+              MyWorldActivity.mCactusCount++;
+
+              addObstacleObject(pTMXTiledMap, tmxLayer, tmxTile);
+
+            }
+          });
+
+//      mTMXTiledMap = tmxLoader.loadFromAsset("tmx/custom/desert.tmx");
+      mTMXTiledMap = tmxLoader.loadFromAsset("tmx/custom/2.tmx");
+
       mTMXTiledMap.setOffsetCenter(0, 0);
 
-      toastOnUiThread("Cactus count in this TMXTiledMap: " + MyWorldActivity.mCactusCount, Toast.LENGTH_LONG);
+      toastOnUiThread("Obstacles count in this TMXTiledMap: " + MyWorldActivity.mCactusCount, Toast.LENGTH_LONG);
 
       mScene.attachChild(mTMXTiledMap);
 
@@ -224,6 +236,21 @@ public class MyWorldActivity extends SimpleBaseGameActivity {
     } catch (final TMXLoadException e) {
       Debug.error(e);
     }
+  }
+
+  private void addObstacleObject(TMXTiledMap pTMXTiledMap, TMXLayer pTMXLayer, TMXTile pTMXTile) {
+    int w = pTMXTiledMap.getTileWidth();
+    int h = pTMXTiledMap.getTileHeight();
+    Rectangle obstacle = new Rectangle(
+        0, 0,
+        w, h,
+        getVertexBufferObjectManager());
+
+    obstacle.setOffsetCenter(0, 0);
+    obstacle.setColor(1, 0, 0, 0.25f);
+    obstacle.setPosition(pTMXLayer.getTileX(pTMXTile.getTileColumn()), pTMXLayer.getTileY(pTMXTile.getTileRow()));
+
+    pTMXTiledMap.attachChild(obstacle);
   }
 
   private void initPlayer() {

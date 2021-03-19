@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="40" height="40" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="Desert" tilewidth="32" tileheight="32" spacing="3" margin="2">
+  <image source="gfx/desert_tiled.png" width="281" height="211"/>
+  <tile id="24">
+   <properties>
+    <property name="cost" value="3"/>
+   </properties>
+  </tile>
+  <tile id="25">
+   <properties>
+    <property name="cost" value="3"/>
+   </properties>
+  </tile>
+  <tile id="26">
+   <properties>
+    <property name="cost" value="3"/>
+   </properties>
+  </tile>
+  <tile id="29">
+   <properties>
+    <property name="cost" value="5"/>
+   </properties>
+  </tile>
+  <tile id="30">
+   <properties>
+    <property name="cost" value="99"/>
+    <property name="wall" value="true"/>
+   </properties>
+  </tile>
+  <tile id="31">
+   <properties>
+    <property name="cost" value="99"/>
+    <property name="wall" value="true"/>
+   </properties>
+  </tile>
+  <tile id="32">
+   <properties>
+    <property name="cost" value="3"/>
+   </properties>
+  </tile>
+  <tile id="33">
+   <properties>
+    <property name="cost" value="0"/>
+   </properties>
+  </tile>
+  <tile id="34">
+   <properties>
+    <property name="cost" value="3"/>
+   </properties>
+  </tile>
+  <tile id="35">
+   <properties>
+    <property name="cost" value="3"/>
+   </properties>
+  </tile>
+  <tile id="36">
+   <properties>
+    <property name="cost" value="3"/>
+   </properties>
+  </tile>
+  <tile id="40">
+   <properties>
+    <property name="cost" value="3"/>
+   </properties>
+  </tile>
+  <tile id="41">
+   <properties>
+    <property name="cost" value="3"/>
+   </properties>
+  </tile>
+  <tile id="42">
+   <properties>
+    <property name="cost" value="3"/>
+   </properties>
+  </tile>
+  <tile id="43">
+   <properties>
+    <property name="cost" value="3"/>
+   </properties>
+  </tile>
+  <tile id="44">
+   <properties>
+    <property name="cost" value="3"/>
+   </properties>
+  </tile>
+  <tile id="45">
+   <properties>
+    <property name="cost" value="99"/>
+    <property name="wall" value="true"/>
+   </properties>
+  </tile>
+  <tile id="46">
+   <properties>
+    <property name="Collide" value="true"/>
+   </properties>
+  </tile>
+  <tile id="47">
+   <properties>
+    <property name="cost" value="99"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="Ground" width="40" height="40">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+2W3Q6CMAyF9xpowlD0wr/M9386Z2KTpp7SAuNGe/GFCK6c9ZyN9Sml/sOhcqyM7N5ausqjUV1N33NGDflfqrmlvhY1T5Xbhvqy8Zvfz+w51bxXdgr7BfoGxpw5ZnHl/mp4/eJz1eZkZVH271K5KpyFPs0TlGXph+VBN+EfGl/Sd56mMkNzpTlJUH74Oy0fkYfSL6t/yA9Nr8wBX6eah0XpHz336LP0Ss3UFy270sPCrtwvjz7K/uDQTHVJj7YPc32yf/L5kv551tIIeoEyhtYN//YhfUXMS+tpEeORHrS/e/Y/S9/aHr5ra+eAqf2Pc9tYH8of2suzgcdfbw2kD50DWuae67Pu8+y3OuNtoU/7TmQxrlUfvf6i7K894/0jrfMfBEEQBEEQBMFv8gI4peqbABkAAA==
+  </data>
+ </layer>
+</map>

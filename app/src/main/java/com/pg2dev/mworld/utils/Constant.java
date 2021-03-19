@@ -7,8 +7,8 @@ public final class Constant {
   //  public static final int CAMERA_WIDTH = 1136;
   //  public static final int CAMERA_HEIGHT = 640;
 
-  public static final int CAMERA_WIDTH = 480;
-  public static final int CAMERA_HEIGHT = 320;
+  public static final int CAMERA_WIDTH = 960;
+  public static final int CAMERA_HEIGHT = 640;
 
   public static final int MAX_STEPS_PER_SECOND = 1000;
 

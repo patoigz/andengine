@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="40" height="40" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="Desert" tilewidth="32" tileheight="32" spacing="3" margin="2">
+  <image source="gfx/desert_tiled.png" width="281" height="211"/>
+  <tile id="30">
+   <properties>
+    <property name="wall" value="true"/>
+   </properties>
+  </tile>
+  <tile id="31">
+   <properties>
+    <property name="wall" value="true"/>
+   </properties>
+  </tile>
+  <tile id="45">
+   <properties>
+    <property name="wall" value="true"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="Ground" width="40" height="40">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+2Y2U7DMBBFDZUoUImytJStC4SlbG3+/+uYiIxiRmN7xkvaBx6O2kp2fHrjxB4vjDGLgpwBY+C88DgxbBi/ZcL1JsBU0V4yVs78HoC50AsJtbsGZsCN0mWVmLWUA+AQGChzR0fNWLfAnYJ74AQ4BUY9ZPEIPCmoCvqtPX7PwAfwskM/X36VMM8+/F730K8mXtTvy/zO/++e/eico79DedF5Sf2WDrTPwZrkh99DfjRXSX6Sd+Eb+Y0+2vxi7q9mjaCelPf2/kn5zOA3bDk23VrkYyBsh8wT/cam21/gf/UxErbj+sX4zUy3v7gALgNcedpNLZ8J08/lJ3mOQ3NPgp1rqfUixbOEX47cJH4xe7NYD9ec4fw27afk3WmvP5Vn/FC+Gj9E4tc41W1bqV9qfg3bnv1i5l+KX665m+pn7y8qQV/XPt6VPee3Vfi5xrD70meoZq6t8dPkx91r2tfeu+/aj+tbyi9mb8b50TmKfpJ3Z6n115W97ep6tnL7rYR+vhp8H/Lz1ZC5/GhWrj1gytwtkR93jxu055M+v+Ys0VWT+GqYI9PVRENyfen5JEL3NtK6xFfD4HkrEuvCIalfQjUMnrciWod//vIDdIeIWwAZAAA=
+  </data>
+ </layer>
+</map>
